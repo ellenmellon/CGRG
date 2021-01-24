@@ -9,7 +9,7 @@
 ## env setup:
 requires python3.6
 requirements.txt was created by pip freeze, you probably don't need that many packages.
-download and unzip the folder[https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing] containing the pretrained model under ./src folder. 
+download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained model under ./src folder. 
 
 commands:
 > cd src
