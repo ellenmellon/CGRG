@@ -1,8 +1,7 @@
 # A-Controllable-Model-of-Grounded-Response-Generation
 
 
-## env setup:
-Run:
+## Environment setup:
 1. `conda env create -f cgrg.yml`
 2. `conda activate cgrg`
 3. `bash setup.sh`
