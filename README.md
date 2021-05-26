@@ -13,16 +13,16 @@ Run:
 3. You can skip the above two steps if using the [preprocessed files](https://drive.google.com/file/d/1Nj9dveY6s666KRB0yhBtGQ3M7eWfNOJ1/view?usp=sharing). Unzip it and put under `./data`. It contains a toy test file.
 4. Download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained GPT2 model under `./src` folder. 
 
-You can create your own processed data in the same format as files in the link of step 3. Here is the format:
-instance index (order not required)
-previous utterances
-target response
-grounding sentence s1
-control phrase in s1
-grounding sentence s2
-control phrase in s2
-...
-...
+You can create your own processed data in the same format as files in the link of step 3. Here is the format: <br>
+instance index (order not required) <br>
+previous utterances <br>
+target response <br>
+grounding sentence s1 <br>
+control phrase in s1 <br>
+grounding sentence s2 <br>
+control phrase in s2 <br>
+... <br>
+... <br>
 
 
 ## Training and Inference:
