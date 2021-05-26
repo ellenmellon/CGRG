@@ -67,7 +67,7 @@ class GPT2FeatureDataset(Dataset):
                 -self.max_len:]
             feat_dict['lm_labels'] = feat_dict['lm_labels'][-self.max_len:]
             feat_dict['attn_masks'] = feat_dict['attn_masks'][-self.max_len:]
-        # import pdb; pdb.set_trace()
+
         feat = InputFeatures_v4(**feat_dict)
         return feat
 

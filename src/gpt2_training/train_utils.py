@@ -1,7 +1,3 @@
-'''
-* @Date: 2019-04-01 14:38:09
-'''
-
 import os
 import logging
 import torch
@@ -42,9 +38,6 @@ def load_model(model, checkpoint, args, verbose=False):
             start_model = model.transformer
         start_model.load_state_dict(model_state_dict, strict=False) # double check imcompatible keys
 
-    # if not args.no_token_id:
-    #     model.transformer.turn_emb = torch.nn.Embedding(
-    #         128, model.transformer.wpe.embedding_dim)  # token_type
     if args.fp16:
         logger.info('in fp16, model.half() activated')
         model.half()
@@ -140,7 +133,6 @@ def _get_test_feature_from_text(conv_id, text, tokenizer, offset=0):
     attn_masks = [[int(c) for c in seq]+[0]*(len(input_ids)-len(seq)) for seq in attn_masks.split(',')[:len(input_ids)]]
 
 
-    #lm_labels = [-1]*len(input_ids)
     lm_labels = [int(num) for num in tgt.strip().split()]
     weights = [1.0]*len(input_ids)
 
@@ -156,7 +148,7 @@ def _make_features(id_, weights, inputs, attn_masks, position_ids, type_ids, tok
     ws = []
     len_ = 0
     i = 0
-    #print('Assuming filtering too long sequences is already done !!!')
+
     for ids, w in zip(inputs, weights):
         sents.append(ids)
         ws.append(w)
@@ -174,7 +166,7 @@ def _make_feature(id_, sents, ws, attn_masks, position_ids, token_type_ids, eos)
     input_ids = [i for s in sents for i in s+[eos]][:-1]
     lm_labels = []
     weights = []
-    #token_type_ids = []  # this becomes round ids
+
     for i, (s, w) in enumerate(zip(sents, ws)):
         if i == 0:
             lm_labels += [-1] * len(s)
@@ -380,7 +372,6 @@ def get_eval_list_same_length_with_order(input_file, tokenizer, max_batch_size, 
     with open(input_file, 'r', encoding="utf-8") as f:
         lines = f.readlines()
 
-    # content = content[:16]
     i = 0
     features = []
     for line in lines:

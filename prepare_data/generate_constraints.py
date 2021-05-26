@@ -23,7 +23,7 @@ dataset_2_min_mean_idf = {'dstc':8.5}
 PREFICES = ['train', 'dev', 'test']
 DATASET = 'dstc'
 
-PROJECT_FOLDER = '/data2/ellen/cstr_grounded_conv'
+PROJECT_FOLDER = '../'
 
 
 def loadWord2IDF(fname):
@@ -180,12 +180,12 @@ def writeMatchedPhrasesToFile(
     with_c = i-start_idx-no_constraint
     print('# examples with cstr(s) found: {}; # examples: {}; average # cstr(s) per constrained example: {}; average # sent(s) per constrained example: {}'.format(with_c, i-start_idx, n_c*1.0/with_c, n_s*1.0/with_c))
 
-def generateQATrainingData(isTrain=True, dataset=None, numOfProcesses=10, prefix='train'):
+def generateCstrData(dataset=None, numOfProcesses=10, prefix='train'):
     
     source_file = '{}/data/{}/src_tgt_ctx/{}_source.txt'.format(PROJECT_FOLDER, dataset, prefix)
     target_file = '{}/data/{}/src_tgt_ctx/{}_target.txt'.format(PROJECT_FOLDER, dataset, prefix)
     ctx_file = '{}/data/{}/src_tgt_ctx/{}_context.txt'.format(PROJECT_FOLDER, dataset, prefix)
-    idf_file = '{}/prepare_data/generate_conv_with_cstr/idf_files/idf_{}.txt'.format(PROJECT_FOLDER, dataset)
+    idf_file = '{}/data/{}/idf_files/idf_{}.txt'.format(PROJECT_FOLDER, dataset)
     
     queries = []
     responses = []
@@ -219,7 +219,7 @@ def generateQATrainingData(isTrain=True, dataset=None, numOfProcesses=10, prefix
     # creating training data for QA andf write to output file
     lock = Lock()
     processes = []
-    fout = open('{}/data/dstc/conv_with_cstr/constraints_{}.txt'.format(PROJECT_FOLDER, prefix), 'wb', buffering=0)
+    fout = open('{}/data/{}/conv_with_cstr/constraints_{}.txt'.format(PROJECT_FOLDER, dataset, prefix), 'wb', buffering=0)
     
     for proc_id in range(numOfProcesses):
         start_idx = proc_id * instancesPerProc
@@ -234,4 +234,4 @@ def generateQATrainingData(isTrain=True, dataset=None, numOfProcesses=10, prefix
 
 
 for prefix in PREFICES:
-    generateQATrainingData(isTrain=False, dataset=DATASET, numOfProcesses=N_THREADS, prefix=prefix)
+    generateCstrData(dataset=DATASET, numOfProcesses=N_THREADS, prefix=prefix)

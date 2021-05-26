@@ -1,32 +1,24 @@
 # A-Controllable-Model-of-Grounded-Response-Generation
 
 
-
-## folders:
-./data folder contains sample raw_data.txt (processed after the raw reddit data).
-
-
 ## env setup:
-requires python3.6
-requirements.txt was created by pip freeze, you probably don't need that many packages.
-download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained model under ./src folder. 
+Run:
+1. `conda env create -f cgrg.yml`
+2. `conda activate cgrg`
+3. `bash setup.sh`
 
-commands:
-> cd src
-> bash run.sh
+## Data:
+1. Download Reddit data from the [original git repo](https://github.com/qkaren/converse_reading_cmr).
+2. Put the unzipped folder under ./data/dstc and name as ./data/dstc/raw
 
 
-## format of data/raw_data.txt (so that you can create your own):
+## Models:
+1. Download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained GPT2 model under ./src folder. 
+2. Trained CGRG model on Reddit can be found [here](https://drive.google.com/file/d/16dsafcAuGSU_mG9lk_pH87sreSkAYC_Q/view?usp=sharing)
 
-data examples are seperated by an empty line
-each data example has the following format:
 
-instance index <br>
-previous utterances separated by <t1>, <t2>, ...  <br>
-target response  <br>
-grounding sentence s1  <br>
-control phrase in s1  <br>
-grounding sentence s2  <br>
-control phrase in s2   <br>
-...   <br>
-...  <br>
+## Commands:
+1. `cd prepare_data`
+2. `bash prepare_data.sh`
+3. `cd src`
+4. `bash run.sh`

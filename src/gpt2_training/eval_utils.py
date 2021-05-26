@@ -1,11 +1,8 @@
-'''
-* @Date: 2019-04-02 13:46:04
-'''
 import sys
 import torch
 import tqdm
 import logging
-# import nltk
+
 
 import numpy as np
 
@@ -52,16 +49,8 @@ def eval_model_loss(model, eval_dataloader, epoch_id, args, encoder=None, return
     if outfile != '':
         fout = open(outfile, 'a+')
     with torch.no_grad():
-        print(len(eval_dataloader))
         for step, batch in enumerate(eval_dataloader):
-            #import pdb; pdb.set_trace()
             batch = tuple(t.to(args.device) for t in batch)
-            # new_batch = []
-            # for t in batch:
-            #     if isinstance(t,list):
-            #         new_batch.append(t)
-            #     else:
-            #         new_batch.append(t.to(args.device))
             input_ids, position_ids, token_ids, label_ids, attn_masks = batch
 
             if args.no_token_id:
@@ -70,8 +59,6 @@ def eval_model_loss(model, eval_dataloader, epoch_id, args, encoder=None, return
                 attn_masks = None
             n_sample = input_ids.shape[0]
 
-            #import pdb; pdb.set_trace()
-            #print(input_ids.shape, position_ids.shape, token_ids.shape, label_ids.shape)
             if return_loss:
                 token_level_loss, loss, ppl = model(input_ids, position_ids, token_ids, label_ids, attn_masks, None, return_loss)
             else:
@@ -87,7 +74,7 @@ def eval_model_loss(model, eval_dataloader, epoch_id, args, encoder=None, return
             if fout:
                 # response level loss
                 fout.write('{}\n\n'.format(loss.item()))
-            #print('ppl:', ppl.item())
+
             tot_loss.append(loss.mean().item() * n_sample)
             tot_ppl.append(ppl.mean().item() * n_sample)
             tot_sample.append(n_sample)

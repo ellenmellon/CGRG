@@ -7,7 +7,7 @@
     "train_input_file": "../data/train.db",
     "eval_input_file": "../data/dev.tsv",
     "continue_from": 0,
-    "train_batch_size": 32,
+    "train_batch_size": 2,
     "gradient_accumulation_steps": 2,
     "eval_batch_size": 32,
     "learning_rate": 1e-04,

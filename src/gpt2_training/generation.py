@@ -1,6 +1,6 @@
-'''
-* @Date: 2019-04-05 16:50:50 
-'''
+""" 
+    Based on script from DialoGPT
+"""
 import torch
 import torch.nn.functional as F
 
@@ -15,12 +15,8 @@ def generate_next_token(model, input_ids, position_ids=None, token_type_ids=None
 
     with torch.no_grad():
         if not past:
-            # print(prev.device)
-            # print(token_type_ids.device)
             hidden_states, past = model.transformer(prev, position_ids, token_type_ids, attn_masks, past=past)
-        else:
-            # print(past)
-            # print(past.device)            
+        else:           
             hidden_states, past = model.transformer(prev, position_ids, token_type_ids, attn_masks, past=past)    # position embedding might be wrong?
         logits = model.lm_head(hidden_states)
         logits = logits[:, -1, :] / temperature
@@ -34,22 +30,17 @@ def generate_next_token(model, input_ids, position_ids=None, token_type_ids=None
             # now it only work when shape[0] = 1
             _, top_ind = torch.topk(log_probs, k=top_k, dim=-1)
             extra_score = torch.zeros(log_probs.shape).to(log_probs.device)
-            #print(bonus_indices)
             for b in range(top_ind.size(0)):
                 cur_bonus_indices = torch.LongTensor(list(set(bonus_indices[b].view(-1).tolist()).intersection(set(top_ind[b].view(-1).tolist())))).to(bonus_indices[b].device)
                 extra_score[b].index_fill_(0, cur_bonus_indices, bonus)
-            #print(bonus_indices)
-            #print(log_probs)
-            #print(torch.index_select(extra_score, 1, bonus_indices.view(-1)))
+
             log_probs = log_probs + extra_score
         if sample:
             prev = torch.multinomial(log_probs, num_samples=1)
-            # import pdb; pdb.set_trace()
             return prev, torch.gather(log_probs, 1, prev), past
         else:
             # this is where the beam search bug begins : no matter what beam size you take, it only take the top 1 (= beam size always 1)
             log_probs_sel, prev = torch.topk(log_probs, k=beam_size, dim=-1)
-            #print(log_probs_sel, torch.sum(log_probs), torch.topk(log_probs, k=5, dim=-1))
             return prev, log_probs_sel, past
 
 def get_bonus_indices(prev_path, bonus_indices, device):
@@ -59,7 +50,6 @@ def get_bonus_indices(prev_path, bonus_indices, device):
 
 def generate_sequence(model, input_ids, position_ids=None, token_type_ids=None, attn_masks=None, start_token=None, temperature=1, top_k=0, length = 20, sample=False, use_bonus=False, bonus=0.0, enc=None, past=None, device='cuda'):
     output = input_ids.new_zeros([input_ids.size(0),0])
-    # tgt_start_index = torch.sum(input_ids != 0, dim = 1)
     if isinstance(model, torch.nn.DataParallel):
         model = model.module
     prev = input_ids
@@ -144,10 +134,6 @@ class Node(object):
         return f'value = {self.value}, parent = {self.parent.value}, cost = {self.cum_cost}'
 
 
-#def get_bonus_indices(prev_path, bonus_indices, device):
-#    bonus_indices = list(set(bonus_indices).difference(set(prev_path)).difference(EXCLUDE))
-#    return torch.LongTensor(bonus_indices).to(device)
-
 def beam_search_naive(model, input_ids, position_ids=None, token_type_ids=None, attn_masks=None, length=20, beam_width=3, device='cuda', use_bonus=False, bonus=0.0, enc=None):
     """
     currently it does NOT support batch parabllel
@@ -166,15 +152,13 @@ def beam_search_naive(model, input_ids, position_ids=None, token_type_ids=None, 
 
         # bonus indices
         if use_bonus:
-            #mask = token_type_ids[b:b+1].ge(21) & token_type_ids[b:b+1].le(30)
             in_string = enc.decode(input_ids[b:b+1].view(-1).tolist())
             if '<s>' in in_string:
                 in_string = '<c>'.join(in_string.split('<c>')[:-1])
                 bonus_indices = enc.encode(in_string.split('<s>')[-1])
             else:
                 bonus_indices = []
-            #bonus_indices = enc.encode(' ' + enc.decode(torch.masked_select(input_ids[b:b+1].view(-1), mask.view(-1)).tolist()))
-        for i in range(length):
+         for i in range(length):
             fringe, all_prev, all_probs, all_past = [], torch.Tensor(0).long().to(device), [], []
             for n in next_fringe:
                 if n.value == EOS_ID:
@@ -218,9 +202,6 @@ def beam_search_naive(model, input_ids, position_ids=None, token_type_ids=None, 
         results.extend(next_fringe)
         results.sort(key=lambda n : n.cum_cost, reverse=True)
         best_result = results[0]
-        #print(enc.decode(best_result.path), best_result.path)
-        #print(enc.decode(bonus_indices), bonus_indices)
-        #print(enc.decode(get_bonus_indices(best_result.path, bonus_indices, device).tolist()), get_bonus_indices(best_result.path, bonus_indices, device).tolist())
         decode, decode_loss = [], []
         while best_result.value != -1:
             decode.append(best_result.value)

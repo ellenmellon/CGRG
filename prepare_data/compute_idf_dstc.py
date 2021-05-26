@@ -7,7 +7,7 @@ import math
 
 STOPWORDS = set(stopwords.words('english'))
 PUNCS = set([i for i in string.punctuation])
-PROJECT_FOLDER = '/data2/ellen/cstr_grounded_conv'
+PROJECT_FOLDER = '../'
 DATASET = 'dstc'
 
 
@@ -38,7 +38,7 @@ for key in word2NumDocs:
 
 word2IDF = sorted(word2IDF.items(), key=lambda kv: kv[1])#, reverse=True)
 
-idf_file = '{}/prepare_data/generate_conv_with_cstr/idf_files/idf_{}.txt'.format(PROJECT_FOLDER, DATASET)
+idf_file = '{}/data/dstc/idf_files/idf_{}.txt'.format(PROJECT_FOLDER, DATASET)
 with open(idf_file, 'w') as fout:
     for t in word2IDF:
         if t[0] in STOPWORDS or t[0] in PUNCS:

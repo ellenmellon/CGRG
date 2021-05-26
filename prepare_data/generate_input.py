@@ -1,6 +1,6 @@
 #############
 # Creates input files for GPT2 + IA model. (Note: attention masks can be exploited to perform the same way as GPT2 model)
-# Each line encodes features of an example, and any examples of length > max_lenght will be discarded
+# Each line encodes features of an example, and any examples of length > max_length will be discarded
 #############
 
 import sys
@@ -97,12 +97,11 @@ def main(args):
                 total_length += len(source[-1])
 
             tot_num += 1
-            #if tot_num%10000 == 0:
-            #    print(tot_num, n_valid)
+
             if total_length > args.max_seq_length or len(target) > args.max_seq_length:
                 skip_ids += [eid]
                 eid += 1
-                #print(lines[0])
+
                 continue
             n_valid += 1
             eid += 1
@@ -118,8 +117,7 @@ def main(args):
             for s in source:
                 dh += s
             source_end_idx = len(dh)
-            #print(toker.decode(dh))
-            #return
+
             for sid in range(len(sent2idx)):
                 sent2idx[sid] = (sent2idx[sid][0]+source_end_idx, sent2idx[sid][1]+source_end_idx)
             for cid in range(len(cstr2idx)):

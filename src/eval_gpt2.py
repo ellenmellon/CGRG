@@ -179,13 +179,6 @@ if n_gpu > 0:
     torch.cuda.manual_seed_all(args.seed)
 
 timestamp = datetime.datetime.now().strftime('%Y-%m-%d%H%M%S')
-#output_dir = join(args.output_dir,
-#                  'GPT2.{}.{}.{}gpu.{}'.format(args.learning_rate,
-#                                               args.train_batch_size, n_gpu,
-#                                               timestamp))
-#log_dir = args.log_dir if args.log_dir is not None and len(args.log_dir) > 0 else output_dir
-#if args.local_rank == -1 or get_rank() == 0:
-#    os.makedirs(output_dir, exist_ok=True)
 
 logger.info('Input Argument Information')
 args_dict = vars(args)

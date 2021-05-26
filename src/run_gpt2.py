@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # NOTE: use beam search and beam size = 1 only. (This is consistent with the paper)
-# The beam search is not working for beam_size > 1 now. There are also some bugs :((
+# The beam search is not working for beam_size > 1 now.
 
 import json
 from os.path import abspath, dirname, exists, join
@@ -38,9 +38,6 @@ def run_model():
     parser.add_argument('--model_name_or_path', type=str, default='/philly/sc3/resrchvc/yizzhang/GPT/pretrained/117M', help='pretrained model name or path to local checkpoint')
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--load_checkpoint", '-c', type=str, default='/philly/sc3/resrchvc/yizzhang/GPT/pretrained/117M/pytorch_model.bin')
-    # parser.add_argument("--nsamples", type=int, default=1)
-    # parser.add_argument("--batch_size", type=int, default=-1)
-    # parser.add_argument("--length", type=int, default=-1)
     parser.add_argument("--fp16", type=boolean_string, default=False)
     parser.add_argument("--test_file", '-t', type=str, default=None, help='input file for testing')
     parser.add_argument("--output_file", '-o', type=str, default=None, help='output file for testing')
@@ -60,7 +57,7 @@ def run_model():
 
     #BEAM
     parser.add_argument("--beam", action='store_true', help='If true, beam search')
-    parser.add_argument("--beam_width", type=int, default=3)
+    parser.add_argument("--beam_width", type=int, default=1)
     
     parser.add_argument('--use_gpu', action='store_true')
     parser.add_argument("--gpu", type=int, default=0)
@@ -98,10 +95,6 @@ def run_model():
 # do normal parsing
 
 
-    # if args.batch_size == -1:
-    #     args.batch_size = 1
-    # assert args.nsamples % args.batch_size == 0
-
     device = torch.device("cuda" if torch.cuda.is_available() and args.use_gpu else "cpu")
     n_gpu = torch.cuda.device_count()
     args.device, args.n_gpu = device, n_gpu
@@ -118,13 +111,8 @@ def run_model():
     model.to(device)
     model.eval()
 
-    # if args.length == -1:
-    #     args.length = model.config.n_ctx // 2
-    # elif args.length > model.config.n_ctx:
-    #     raise ValueError("Can't get samples longer than window size: %s" % model.config.n_ctx)
 
     if args.test_file:
-        # eval_dataloader = get_eval_list_same_length(args.test_file, enc, args.batch_size, True)
         eval_dataloader = get_eval_list_same_length_with_order(args.test_file, enc, args.batch_size, True)
 
     
@@ -138,17 +126,16 @@ def run_model():
         with torch.no_grad():
             with tqdm.tqdm(total=len(eval_dataloader), desc=f"Test") as pbar:
                 for step, batch in enumerate(tqdm.tqdm(eval_dataloader, desc="Iteration")):               
-                    # batch = tuple(t.to(device) for t in batch)
+
                     new_batch = []
                     for t in batch:
                         if isinstance(t,list):
                             new_batch.append(t)
                         else:
                             new_batch.append(t.to(device))
-                    # import pdb; pdb.set_trace()
+
                     input_ids, position_ids, token_ids, attn_masks, label_ids, context_len, conv_id = new_batch  
-                    # print(input_ids.shape, position_ids.shape, token_ids.shape, label_ids.shape)
-                    # import pdb; pdb.set_trace()
+
                     if args.no_token_id:
                         token_ids = None
                     if args.no_eos:
@@ -177,8 +164,8 @@ def run_model():
 
                 conv_id_map = {conv_ids[i]: i for i in range(len(conv_ids))}
                 val_src = [enc.decode(cut_seq_to_eos(s)).encode('utf-8').decode('utf-8') for s in sources]
-                print(len(val_src),len(targets))
-                #val_set = [s[0].encode('utf-8').decode('utf-8') for s in targets]
+                #print(len(val_src),len(targets))
+
                 val_set = [enc.decode(s).encode('utf-8').decode('utf-8') for s in targets]
                 gen = [enc.decode(cut_seq_to_eos(s)).encode('utf-8').decode('utf-8') for s in outs]
 
@@ -231,11 +218,7 @@ def run_model():
             print("=" * 40 + " RESPONSE " + str(generated) + " " + "=" * 40)
             print(text)
             print("=" * 80)
-            # import pdb; pdb.set_trace()
-            # tmp = [enc.decode([i]).encode('utf-8').decode('utf-8').lstrip() for i in range(50257)]
-            # with open('vocab.txt','w') as f:
-            #     for t in tmp:
-            #         f.write(t + '\n')
+
 
 if __name__ == '__main__':
     run_model()

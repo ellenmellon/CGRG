@@ -1,7 +1,7 @@
 '''
  * @Date: 2019-04-01 13:17:00
- * @Last Modified by:   Yizhe Zhang
- * @Last Modified time: 2019-04-01 13:17:00
+ * @Last Modified by:   Ellen Wu
+ * @Last Modified time: 2021-05-25 13:17:00
  * @Desc: train GPT2 from scratch/ fine tuning.
           Modified based on Huggingface GPT-2 implementation
 '''
@@ -77,7 +77,7 @@ parser.add_argument("--warmup_proportion", type=float, default=0.1)
 parser.add_argument("--warmup_steps", type=int, default=16000)
 
 parser.add_argument("--normalize_data", type=boolean_string, default=True)
-parser.add_argument("--fp16", type=boolean_string, default=True)
+parser.add_argument("--fp16", type=boolean_string, default=False)
 parser.add_argument("--lr_schedule", type=str,
                     choices=['noam', 'noamwd', 'BERT', 'None'], default='noam')
 parser.add_argument("--loss_scale", type=float, default=0)
@@ -298,11 +298,9 @@ if args.local_rank == -1 or get_rank() == 0:
 global_step = 0
 step = 0
 epoch = 0
-
 if args.continue_from:
     global_step = args.continue_from
     step = global_step*2 - 1
-
 
 if args.local_rank != -1:
     n_gpu = 1

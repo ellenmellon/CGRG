@@ -10,8 +10,8 @@ import spacy
 
 # path for unprocessed dataset folder that contains 
 # files of converstaions and grounding documents
-DATA_FOLDER = '/data3/ellen/raw/'
-OUTPUT_FOLDER = '/data3/ellen/cstr_grounded_conv/data/dstc/src_tgt_ctx'
+DATA_FOLDER = '../data/dstc/raw/'
+OUTPUT_FOLDER = '../data/dstc/src_tgt_ctx'
 
 SUFFICES = ['train', 'dev', 'test']
 USE_LOWERCASE = False
