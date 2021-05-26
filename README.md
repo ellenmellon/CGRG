@@ -8,7 +8,7 @@
 
 ## Data:
 1. Download Reddit data from the [original git repo](https://github.com/qkaren/converse_reading_cmr).
-2. Put the unzipped folder under ./data/dstc and name as ./data/dstc/raw
+2. Put the unzipped folder under `./data/dstc` and name as `./data/dstc/raw`
 
 
 ## Models:
