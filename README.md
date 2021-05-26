@@ -1,23 +1,53 @@
 # A-Controllable-Model-of-Grounded-Response-Generation
 
 
-## Environment setup:
+## Environment Setup:
+Run:
 1. `conda env create -f cgrg.yml`
 2. `conda activate cgrg`
 3. `bash setup.sh`
 
-## Data:
+## Data and Model Preparation:
 1. Download Reddit data from the [original git repo](https://github.com/qkaren/converse_reading_cmr).
 2. Put the unzipped folder under `./data/dstc` and name as `./data/dstc/raw`
+3. You can skip the above two steps if using the [preprocessed files](https://drive.google.com/file/d/1Nj9dveY6s666KRB0yhBtGQ3M7eWfNOJ1/view?usp=sharing). Unzip it and put under `./data`. It contains a toy test file.
+4. Download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained GPT2 model under `./src` folder. 
+
+You can create your own processed data in the same format as files in the link of step 3. Here is the format:
+instance index (order not required)
+previous utterances
+target response
+grounding sentence s1
+control phrase in s1
+grounding sentence s2
+control phrase in s2
+...
+...
 
 
-## Models:
-1. Download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained GPT2 model under ./src folder. 
-2. Trained CGRG model on Reddit can be found [here](https://drive.google.com/file/d/16dsafcAuGSU_mG9lk_pH87sreSkAYC_Q/view?usp=sharing)
-
-
-## Commands:
+## Training and Inference:
+If you chose to use the preprocessed data above in step 3 above, you can skip step 2 below. Step 3 would take some time.
 1. `cd prepare_data`
-2. `bash prepare_data.sh`
-3. `cd src`
-4. `bash run.sh`
+2. `bash preprocess.sh`
+3. `bash prepare_model_inputs.sh`
+4. `cd src`
+5. `bash run.sh`
+
+
+## Evaluation
+See requirements in the README file under `./eval`. Run:
+1. `cd eval`
+2. `python create_eval_files.py YOUR_OUTPUT_FILE_FROM_STEP_5_ABOVE`
+3. `python dstc.py pred.txt -rf ref.txt`
+
+
+## Cite
+```
+@inproceedings{wu-etal-2021-cgrg,
+    author = "Wu, Zeqiu and Galley, Michel and Brockett, Chris and Zhang, Yizhe and Gao, Xiang and Quirk, Chris and Koncel-Kedziorski, Rik and Gao, Jianfeng and Hajishirzi, Hannaneh and Ostendorf, Mari and Dolan, Bill",
+    title = "A Controllable Model of Grounded Response Generation",
+    booktitle = "AAAI",
+    year = "2021",
+    month = "January",
+}
+```

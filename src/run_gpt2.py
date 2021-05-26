@@ -35,9 +35,9 @@ def run_model():
     print(socket.gethostname())
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--model_name_or_path', type=str, default='/philly/sc3/resrchvc/yizzhang/GPT/pretrained/117M', help='pretrained model name or path to local checkpoint')
+    parser.add_argument('--model_name_or_path', type=str, default='', help='pretrained model name or path to local checkpoint')
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--load_checkpoint", '-c', type=str, default='/philly/sc3/resrchvc/yizzhang/GPT/pretrained/117M/pytorch_model.bin')
+    parser.add_argument("--load_checkpoint", '-c', type=str, default='')
     parser.add_argument("--fp16", type=boolean_string, default=False)
     parser.add_argument("--test_file", '-t', type=str, default=None, help='input file for testing')
     parser.add_argument("--output_file", '-o', type=str, default=None, help='output file for testing')
@@ -179,7 +179,7 @@ def run_model():
                 resp = gen[-1]
                 print(f"Source: \t {src} \n Oracle: \t {gt} \n Resp: \t {resp}\n")
                 if args.output_file:
-                    with open(args.test_file[:-3] + args.output_file + '.resp.txt', "w") as resp_f:
+                    with open(args.output_file + '.resp.txt', "w") as resp_f:
                         for i,r in enumerate(gen_orders):
                             r = re.sub("\n", "", r)
                             if args.output_ref:

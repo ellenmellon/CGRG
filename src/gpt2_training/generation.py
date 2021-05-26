@@ -158,7 +158,7 @@ def beam_search_naive(model, input_ids, position_ids=None, token_type_ids=None, 
                 bonus_indices = enc.encode(in_string.split('<s>')[-1])
             else:
                 bonus_indices = []
-         for i in range(length):
+        for i in range(length):
             fringe, all_prev, all_probs, all_past = [], torch.Tensor(0).long().to(device), [], []
             for n in next_fringe:
                 if n.value == EOS_ID:

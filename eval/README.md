@@ -1,19 +1,3 @@
-
-# Automatic evaluation script for DSTC7 Task 2
-
-Steps:
-1) Make sure you 'git pull' the latest changes (from October 15, 2018), including changes in ../../data_extraction.
-2) cd to `../../data_extraction` and type make. This will create the multi-reference file used by the metrics (`../../data_extraction/test.refs`).
-3) Install 3rd party software as instructed below (METEOR and mteval-v14c.pl).
-5) Run the following command, where `[SUBMISSION]` is the submission file you want to evaluate: (same format as the one you submitted on Oct 8.)
-```
-python dstc.py -c [SUBMISSION] --refs ../../data_extraction/test.refs
-```
-
-Important: the results printed by dstc.py might differ slightly from the official results, if part of your test set failed to download.
-
-
-
 # What does it do?
 (Based on this [repo](https://github.com/golsun/NLP-tools) by [Sean Xiang Gao](https://www.linkedin.com/in/gxiang1228/))
 

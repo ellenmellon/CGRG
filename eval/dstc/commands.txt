@@ -1,8 +1,0 @@
-python3 ./run_gpt2.py --use_gpu --load_checkpoint /home/yizhe/data/GPT-2/checkpoint/dstc/1e-5_ung_GP2-pretrain-step-60001.pkl --model_name_or_path /home/yizhe/data/GPT-2/pretrained/117M/ --max_seq_length 512 --no_token_id --generation_length 90 --test_file /home/yizhe/data/GPT-2/dstc/test_real.yizhe.unground.tsv --output_file 1e-5_ung-60001-b3 --batch_size 64 --gpu 1 --beam --beam_width 3
-
-# change hyp and ref file paths in the scrip
-python dstc_ellen.py ../../SpaceFusion+BOW+Sents/hyp.3.txt
-
-#python3 batch_eval.py --data_type test
-
-#python3 analyze_result.py

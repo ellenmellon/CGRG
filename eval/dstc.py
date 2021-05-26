@@ -14,7 +14,10 @@ def eval_one_system(submitted, ref, n_refs=1, n_lines=None, clean=False, vshuman
 	if clean:
 		fld_out += '_cleaned'
 	path_hyp = submitted
-	path_refs = [ref+str(i) for i in range(n_refs)]
+	if n_refs > 1:
+		path_refs = [ref+str(i) for i in range(n_refs)]
+	else:
+		path_refs = [ref]
 	nist, bleu, meteor, entropy, div, avg_len = nlp_metrics(path_refs, path_hyp, fld_out, n_lines=n_lines)
 	
 	if n_lines is None:
@@ -38,10 +41,10 @@ if __name__ == '__main__':
 	parser.add_argument('submitted')	# if 'all' or '*', eval all teams listed in dstc/teams.txt
 	                                    # elif endswith '.txt', eval this single file
 	                                    # else, eval all *.txt in folder `submitted_fld`
-	parser.add_argument('--ref_file_prefix', '-rf', type=str, default='/data2/ellen/experiments/dstc/dstc_test_ref.txt.')      
+	parser.add_argument('--ref_file_prefix', '-rf', type=str, default='')      
 	parser.add_argument('--clean', '-c', action='store_true')     # whether to clean ref and hyp before eval
 	parser.add_argument('--n_lines', '-n', type=int, default=-1)  # eval all lines (default) or top n_lines (e.g., for fast debugging)
-	parser.add_argument('--n_refs', '-r', type=int, default=3)    # number of references
+	parser.add_argument('--n_refs', '-r', type=int, default=1)    # number of references
 	parser.add_argument('--vshuman', '-v', type=int, default='1') # when evaluating against human performance (N in refN.txt that should be removed) 
 	                                                                      # in which case we need to remove human output from refs
 	parser.add_argument('--teams', '-i', type=str, default='dstc/teams.txt')
