@@ -76,8 +76,8 @@ for suffix in SUFFICES:
             ct=0
             with open(conv_file) as f_conv:
                 for line in f_conv:
-                    if ct%1000==0:
-                        print(ct)
+                    if ct%10000==0:
+                        print('processed {} lines'.format(ct))
                     ct += 1
                     clean_turns = read_conv_turns_from_line(line, USE_LOWERCASE)
                     if len(clean_turns) > 1:

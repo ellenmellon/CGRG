@@ -38,7 +38,7 @@ for key in word2NumDocs:
 
 word2IDF = sorted(word2IDF.items(), key=lambda kv: kv[1])#, reverse=True)
 
-idf_file = '{}/data/dstc/idf_files/idf_{}.txt'.format(PROJECT_FOLDER, DATASET)
+idf_file = '{}/data/{}/idf_files/idf.txt'.format(PROJECT_FOLDER, DATASET)
 with open(idf_file, 'w') as fout:
     for t in word2IDF:
         if t[0] in STOPWORDS or t[0] in PUNCS:

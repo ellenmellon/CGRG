@@ -185,7 +185,7 @@ def generateCstrData(dataset=None, numOfProcesses=10, prefix='train'):
     source_file = '{}/data/{}/src_tgt_ctx/{}_source.txt'.format(PROJECT_FOLDER, dataset, prefix)
     target_file = '{}/data/{}/src_tgt_ctx/{}_target.txt'.format(PROJECT_FOLDER, dataset, prefix)
     ctx_file = '{}/data/{}/src_tgt_ctx/{}_context.txt'.format(PROJECT_FOLDER, dataset, prefix)
-    idf_file = '{}/data/{}/idf_files/idf_{}.txt'.format(PROJECT_FOLDER, dataset)
+    idf_file = '{}/data/{}/idf_files/idf.txt'.format(PROJECT_FOLDER, dataset)
     
     queries = []
     responses = []
