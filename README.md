@@ -10,7 +10,7 @@ Run:
 ## Data and Model Preparation:
 1. Download Reddit data from the [original git repo](https://github.com/qkaren/converse_reading_cmr).
 2. Put the unzipped folder under `./data/dstc` and name as `./data/dstc/raw`
-3. You can skip the above two steps if using the [preprocessed files](https://drive.google.com/file/d/1Nj9dveY6s666KRB0yhBtGQ3M7eWfNOJ1/view?usp=sharing). Unzip it and put under `./data`. It contains a toy test file.
+3. You can skip the above two steps if using the [preprocessed files](https://drive.google.com/file/d/1Nj9dveY6s666KRB0yhBtGQ3M7eWfNOJ1/view?usp=sharing). Unzip it and put under `./data`. It contains a toy test file. Note that the preprocessed files we provide are based on an earlier version of the Reddit dataset, which is slightly differently from the version provided in the above github repo.
 4. Download and unzip the [folder](https://drive.google.com/file/d/1IjpVacKkafuALM9dlOI5chUaQdEa9jOZ/view?usp=sharing) containing the pretrained GPT2 model under `./src` folder. 
 
 You can create your own processed data in the same format as files in the link of step 3. Here is the format: <br>
